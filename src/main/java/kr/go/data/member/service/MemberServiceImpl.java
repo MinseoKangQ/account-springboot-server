@@ -1,5 +1,7 @@
 package kr.go.data.member.service;
 
+import java.util.Optional;
+import kr.go.data.member.entity.MemberEntity;
 import kr.go.data.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,23 +15,28 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Boolean checkIsPresentId(String id) {
-        return null;
+    public Boolean checkIsAvailableId(String id) {
+        Optional<MemberEntity> gotMember = memberRepository.findById(id);
+        if(gotMember.isEmpty()) return true;
+        else return false;
     }
 
     @Override
-    public Boolean checkIsPresentEmail(String email) {
-        return null;
+    public Boolean checkIsAvailableEmail(String email) {
+        Optional<MemberEntity> gotMember = memberRepository.findByEmail(email);
+        if(gotMember.isEmpty()) return true;
+        else return false;
     }
 
     @Override
-    public Boolean checkIsPresentPhoneNum(String phoneNum) {
-        return null;
+    public Boolean checkIsAvailablePhoneNum(String phoneNum) {
+        Optional<MemberEntity> gotMember = memberRepository.findByPhoneNum(phoneNum);
+        if(gotMember.isEmpty()) return true;
+        else return false;
     }
 
     @Override
     public Boolean signUp() {
         return null;
     }
-
 }

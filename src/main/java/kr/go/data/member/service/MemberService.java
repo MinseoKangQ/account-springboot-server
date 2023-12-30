@@ -6,19 +6,19 @@ public interface MemberService {
      * @param id
      * @return
      */
-    Boolean checkIsPresentId(String id);
+    Boolean checkIsAvailableId(String id);
 
     /**
      * @param email
      * @return
      */
-    Boolean checkIsPresentEmail(String email);
+    Boolean checkIsAvailableEmail(String email);
 
     /**
      * @param phoneNum
      * @return
      */
-    Boolean checkIsPresentPhoneNum(String phoneNum);
+    Boolean checkIsAvailablePhoneNum(String phoneNum);
 
     /**
      * @return
