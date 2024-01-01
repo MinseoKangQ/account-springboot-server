@@ -1,35 +1,31 @@
 package kr.go.data.global.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import java.util.List;
+import kr.go.data.global.exception.ErrorResponse.FieldError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, HttpServletRequest request) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", "값 검증 에러");
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException ex, HttpServletRequest request) {
+        List<FieldError> fieldErrors = ex.getConstraintViolations().stream()
+                .map(violation -> new FieldError(violation.getPropertyPath().toString(), violation.getInvalidValue().toString(), violation.getMessage()))
+                .collect(Collectors.toList());
 
-        String message = ex.getConstraintViolations().stream()
-                .map(ConstraintViolation::getMessage)
-                .collect(Collectors.joining(", "));
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code(ErrorCode.INPUT_VALUE_INVALID.getCode())
+                .message(ErrorCode.INPUT_VALUE_INVALID.getMessage())
+                .status(ErrorCode.INPUT_VALUE_INVALID.getStatus())
+                .errors(fieldErrors)
+                .build();
 
-        body.put("message", message);
-        body.put("path", request.getRequestURI());
-
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorResponse.getStatus()));
     }
 }
