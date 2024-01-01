@@ -2,13 +2,13 @@ package kr.go.data.global.exception;
 
 import java.util.List;
 import lombok.AccessLevel;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.validation.FieldError;
 
 @Getter
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class ErrorResponse {
     private String message;
     private String code;
@@ -16,7 +16,8 @@ public class ErrorResponse {
     private List<FieldError> errors;
 
     @Getter
-    @Builder
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor(access = AccessLevel.PROTECTED)
     public static class FieldError {
         private String field;
         private String value;

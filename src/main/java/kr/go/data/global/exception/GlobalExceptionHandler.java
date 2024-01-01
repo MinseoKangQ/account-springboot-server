@@ -15,16 +15,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException ex, HttpServletRequest request) {
-        List<FieldError> fieldErrors = ex.getConstraintViolations().stream()
-                .map(violation -> new FieldError(violation.getPropertyPath().toString(), violation.getInvalidValue().toString(), violation.getMessage()))
+        List<ErrorResponse.FieldError> fieldErrors = ex.getConstraintViolations().stream()
+                .map(violation -> new ErrorResponse.FieldError(violation.getPropertyPath().toString(), violation.getInvalidValue().toString(), violation.getMessage()))
                 .collect(Collectors.toList());
 
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .code(ErrorCode.INPUT_VALUE_INVALID.getCode())
-                .message(ErrorCode.INPUT_VALUE_INVALID.getMessage())
-                .status(ErrorCode.INPUT_VALUE_INVALID.getStatus())
-                .errors(fieldErrors)
-                .build();
+        ErrorResponse errorResponse = new ErrorResponse(
+                ErrorCode.INPUT_VALUE_INVALID.getMessage(),
+                ErrorCode.INPUT_VALUE_INVALID.getCode(),
+                ErrorCode.INPUT_VALUE_INVALID.getStatus(),
+                fieldErrors
+        );
 
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorResponse.getStatus()));
     }
