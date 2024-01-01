@@ -1,14 +1,17 @@
 package kr.go.data.member.controller;
 
+import jakarta.validation.constraints.NotEmpty;
 import kr.go.data.member.service.MemberServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Validated
 @RestController
 @RequestMapping("/api/account")
 public class MemberController {
@@ -21,7 +24,7 @@ public class MemberController {
 
     // 아이디 검증
     @GetMapping("/check-id")
-    public ResponseEntity<?> checkIsAvailableId(@RequestParam("id") String id) {
+    public ResponseEntity<?> checkIsAvailableId(@RequestParam("id") @NotEmpty(message = "아이디는 비어있을 수 없습니다.") String id) {
         Boolean result = memberService.checkIsAvailableId(id);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
