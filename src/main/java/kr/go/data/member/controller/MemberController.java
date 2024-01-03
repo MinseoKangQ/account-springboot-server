@@ -2,15 +2,12 @@ package kr.go.data.member.controller;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import kr.go.data.member.dto.SignupDto;
 import kr.go.data.member.service.MemberServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Validated
 @RestController
@@ -46,8 +43,9 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp() {
-        return null;
+    public ResponseEntity<?> signUp(@RequestBody SignupDto signupDto) {
+        Boolean result = memberService.signUp(signupDto);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 }
