@@ -1,7 +1,10 @@
 package kr.go.data.member.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import kr.go.data.member.dto.SignupDto;
 import kr.go.data.member.service.MemberServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -29,21 +32,21 @@ public class MemberController {
 
     // 이메일 검증
     @GetMapping("/check-email")
-    public ResponseEntity<?> checkIsAvailableEmail(@RequestParam("email") @NotBlank(message = "이메일은 비어있을 수 없습니다.") String email) {
+    public ResponseEntity<?> checkIsAvailableEmail(@RequestParam("email") @Email(message = "이메일 형식에 맞게 입력해주세요.") @NotBlank(message = "이메일은 비어있을 수 없습니다.") String email) {
         Boolean result = memberService.checkIsAvailableEmail(email);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     // 전화번호 검증
     @GetMapping("/check-phone-num")
-    public ResponseEntity<?> checkIsAvailablePhoneNum(@RequestParam("phoneNum") @NotBlank(message = "전화번호는 비어있을 수 없습니다.") String phoneNum) {
+    public ResponseEntity<?> checkIsAvailablePhoneNum(@RequestParam("phoneNum") @Pattern(regexp = "^\\d{2,3}-\\d{3,4}-\\d{4}$", message = "XXX-XXXX-XXXX 형식으로 입력해주세요.") @NotBlank(message = "전화번호는 비어있을 수 없습니다.") String phoneNum) {
         Boolean result = memberService.checkIsAvailablePhoneNum(phoneNum);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     // 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody SignupDto signupDto) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignupDto signupDto) {
         Boolean result = memberService.signUp(signupDto);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
