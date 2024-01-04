@@ -3,9 +3,8 @@ package kr.go.data.member.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
-import kr.go.data.member.dto.SignupDto;
+import kr.go.data.member.dto.MemberDto;
 import kr.go.data.member.service.MemberServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +45,7 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignupDto signupDto) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody final MemberDto.SignupReq signupDto) {
         Boolean result = memberService.signUp(signupDto);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

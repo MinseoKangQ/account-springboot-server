@@ -5,19 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity(name = "Member")
 @Table(name = "Member")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberEntity {
 
     @Id @GeneratedValue
@@ -38,4 +31,12 @@ public class MemberEntity {
     @Column(name = "member_phone_num")
     private String phoneNum;
 
+    @Builder
+    public MemberEntity(String id, String password, String name, String email, String phoneNum) {
+        this.id = id;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.phoneNum = phoneNum;
+    }
 }

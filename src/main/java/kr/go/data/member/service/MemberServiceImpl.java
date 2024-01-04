@@ -2,7 +2,8 @@ package kr.go.data.member.service;
 
 import java.util.Optional;
 
-import kr.go.data.member.dto.SignupDto;
+import kr.go.data.member.dto.MemberDto;
+import kr.go.data.member.dto.MemberDto.*;
 import kr.go.data.member.entity.MemberEntity;
 import kr.go.data.member.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,9 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Boolean signUp(SignupDto signupDto) {
-        return null;
+    public Boolean signUp(MemberDto.SignupReq dto) {
+        MemberEntity gotEntity = dto.toEntity();
+        memberRepository.save(gotEntity);
+        return true;
     }
 }

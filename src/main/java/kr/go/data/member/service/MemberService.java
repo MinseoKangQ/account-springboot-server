@@ -1,6 +1,6 @@
 package kr.go.data.member.service;
 
-import kr.go.data.member.dto.SignupDto;
+import kr.go.data.member.dto.MemberDto;
 
 public interface MemberService {
 
@@ -25,5 +25,5 @@ public interface MemberService {
     /**
      * @return
      */
-    Boolean signUp(SignupDto signupDto);
+    Boolean signUp(MemberDto.SignupReq signupDto);
 }
