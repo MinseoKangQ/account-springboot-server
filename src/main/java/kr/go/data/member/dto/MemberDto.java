@@ -51,4 +51,16 @@ public class MemberDto {
         }
 
     }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class LoginReq {
+
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class LoginRes {
+
+    }
 }

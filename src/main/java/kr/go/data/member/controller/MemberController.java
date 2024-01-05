@@ -45,8 +45,15 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@Valid @RequestBody final MemberDto.SignupReq signupDto) {
-        Boolean result = memberService.signUp(signupDto);
+    public ResponseEntity<?> signUp(@Valid @RequestBody final MemberDto.SignupReq signupReq) {
+        Boolean result = memberService.signUp(signupReq);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    // 로그인
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody final MemberDto.LoginReq loginReq) {
+        MemberDto.LoginRes result = memberService.login(loginReq);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

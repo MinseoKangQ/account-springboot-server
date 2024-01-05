@@ -11,4 +11,6 @@ public interface MemberService {
     Boolean checkIsAvailablePhoneNum(String phoneNum);
 
     Boolean signUp(MemberDto.SignupReq signupDto);
+
+    MemberDto.LoginRes login(MemberDto.LoginReq loginReq);
 }

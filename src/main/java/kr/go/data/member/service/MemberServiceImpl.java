@@ -43,4 +43,9 @@ public class MemberServiceImpl implements MemberService{
         memberRepository.save(gotEntity);
         return true;
     }
+
+    @Override
+    public MemberDto.LoginRes login(MemberDto.LoginReq loginReq) {
+        return null;
+    }
 }
