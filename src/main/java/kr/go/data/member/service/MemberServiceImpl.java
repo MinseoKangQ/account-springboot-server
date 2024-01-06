@@ -2,6 +2,7 @@ package kr.go.data.member.service;
 
 import java.util.Optional;
 
+import kr.go.data.global.exception.AccountNotFoundException;
 import kr.go.data.member.dto.MemberDto;
 import kr.go.data.member.entity.MemberEntity;
 import kr.go.data.member.repository.MemberRepository;
@@ -46,6 +47,8 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public MemberDto.LoginRes login(MemberDto.LoginReq loginReq) {
+        final Optional<MemberEntity> member = memberRepository.findById(loginReq.getId());
+        member.orElseThrow(() -> new AccountNotFoundException(loginReq.getId()));
         return null;
     }
 }

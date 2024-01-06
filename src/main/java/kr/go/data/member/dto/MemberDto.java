@@ -55,7 +55,8 @@ public class MemberDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class LoginReq {
-
+        private String id;
+        private String password;
     }
 
     @Getter
