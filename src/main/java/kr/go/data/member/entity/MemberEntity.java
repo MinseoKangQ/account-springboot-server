@@ -1,29 +1,24 @@
 package kr.go.data.member.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
-@Entity(name = "Member")
+@Entity
 @Table(name = "Member")
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberEntity {
 
-    @Id @GeneratedValue
-    private Long no;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name = "member_id")
-    private String id;
+    @Column(name = "user_id")
+    private String userId;
 
-    @Column(name = "member_password")
+    @Column(name = "password")
     private String password;
-
-    @Column(name = "member_name")
-    private String name;
 
     @Column(name = "member_email")
     private String email;
@@ -32,10 +27,9 @@ public class MemberEntity {
     private String phoneNum;
 
     @Builder
-    public MemberEntity(String id, String password, String name, String email, String phoneNum) {
-        this.id = id;
+    public MemberEntity(String userId, String password, String email, String phoneNum) {
+        this.userId = userId;
         this.password = password;
-        this.name = name;
         this.email = email;
         this.phoneNum = phoneNum;
     }
