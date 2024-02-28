@@ -17,18 +17,21 @@ public class MemberController {
     // 이메일 중복 확인
     @GetMapping("members/exists/email")
     public ResponseEntity<CustomApiResponse<?>> checkEmailExists(@RequestParam String email) {
-        return null;
+        ResponseEntity<CustomApiResponse<?>> result = memberService.checkEmailExists(email);
+        return result;
     }
 
     // 전화번호 확인
     @GetMapping("members/exists/phone")
     public ResponseEntity<CustomApiResponse<?>> checkPhoneExists(@RequestParam String phone) {
-        return null;
+        ResponseEntity<CustomApiResponse<?>> result = memberService.checkPhoneExists(phone);
+        return result;
     }
 
     // 아이디 중복 확인
     public ResponseEntity<CustomApiResponse<?>> checkUserIdExists(@RequestParam String userId) {
-        return null;
+        ResponseEntity<CustomApiResponse<?>> result = memberService.checkUserIdExists(userId);
+        return result;
     }
 
     // 회원가입
