@@ -2,7 +2,6 @@ package kr.go.data.member.service;
 
 import java.util.Optional;
 
-import kr.go.data.global.exception.AccountNotFoundException;
 import kr.go.data.member.dto.MemberDto;
 import kr.go.data.member.entity.MemberEntity;
 import kr.go.data.member.repository.MemberRepository;

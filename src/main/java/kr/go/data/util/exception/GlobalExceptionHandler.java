@@ -1,4 +1,4 @@
-package kr.go.data.global.exception;
+package kr.go.data.util.exception;
 
 import jakarta.validation.ConstraintViolationException;
 import java.util.List;
