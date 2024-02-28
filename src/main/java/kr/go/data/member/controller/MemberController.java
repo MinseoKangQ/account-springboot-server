@@ -1,5 +1,6 @@
 package kr.go.data.member.controller;
 
+import jakarta.validation.constraints.Pattern;
 import kr.go.data.member.dto.ExampleDto;
 import kr.go.data.member.service.MemberService;
 import kr.go.data.util.response.CustomApiResponse;
@@ -29,6 +30,7 @@ public class MemberController {
     }
 
     // 아이디 중복 확인
+    @GetMapping("members/exists/userId")
     public ResponseEntity<CustomApiResponse<?>> checkUserIdExists(@RequestParam String userId) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.checkUserIdExists(userId);
         return result;

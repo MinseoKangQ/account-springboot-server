@@ -20,17 +20,17 @@ public class MemberEntity {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "member_email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "member_phone_num")
-    private String phoneNum;
+    @Column(name = "phone")
+    private String phone;
 
     @Builder
-    public MemberEntity(String userId, String password, String email, String phoneNum) {
+    public MemberEntity(String userId, String password, String email, String phone) {
         this.userId = userId;
         this.password = password;
         this.email = email;
-        this.phoneNum = phoneNum;
+        this.phone = phone;
     }
 }

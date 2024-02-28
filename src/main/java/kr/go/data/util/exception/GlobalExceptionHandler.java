@@ -52,5 +52,12 @@ public class GlobalExceptionHandler {
                 .body(CustomApiResponse.createFailWithoutData(HttpStatus.CONFLICT.value(), e.getMessage()));
     }
 
+    @ExceptionHandler(CustomValidationException.class)
+    public ResponseEntity<CustomApiResponse<?>> handleCustomValidationException(CustomValidationException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(CustomApiResponse.createFailWithoutData(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+    }
+
 
 }
