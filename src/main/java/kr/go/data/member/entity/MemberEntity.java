@@ -1,6 +1,7 @@
 package kr.go.data.member.entity;
 
 import jakarta.persistence.*;
+import kr.go.data.member.dto.CreateMemberDto;
 import lombok.*;
 
 @Entity
@@ -33,4 +34,5 @@ public class MemberEntity {
         this.email = email;
         this.phone = phone;
     }
+
 }

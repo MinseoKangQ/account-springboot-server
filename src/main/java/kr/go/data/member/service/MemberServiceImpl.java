@@ -1,6 +1,7 @@
 package kr.go.data.member.service;
 
-import kr.go.data.member.dto.ExampleDto;
+import kr.go.data.member.dto.CreateMemberDto;
+import kr.go.data.member.entity.MemberEntity;
 import kr.go.data.member.repository.MemberRepository;
 import kr.go.data.util.exception.CustomValidationException;
 import kr.go.data.util.exception.EntityDuplicatedException;
@@ -9,6 +10,7 @@ import kr.go.data.util.valid.CustomValid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public ResponseEntity<CustomApiResponse<?>> checkEmailExists(String email) {
@@ -33,7 +36,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 응답
         CustomApiResponse<Object> resultBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), null, "사용 가능한 이메일입니다.");
-        return ResponseEntity.ok(resultBody);
+        return ResponseEntity.status(HttpStatus.OK).body(resultBody);
     }
 
     @Override
@@ -52,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 응답
         CustomApiResponse<Object> resultBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), null, "사용 가능한 전화번호입니다.");
-        return ResponseEntity.ok(resultBody);
+        return ResponseEntity.status(HttpStatus.OK).body(resultBody);
     }
 
     @Override
@@ -71,11 +74,34 @@ public class MemberServiceImpl implements MemberService {
 
         // 응답
         CustomApiResponse<Object> resultBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), null, "사용 가능한 아이디입니다.");
-        return ResponseEntity.ok(resultBody);
+        return ResponseEntity.status(HttpStatus.OK).body(resultBody);
     }
 
     @Override
-    public ResponseEntity<CustomApiResponse<?>> registerMember(ExampleDto dto) {
-        return null;
+    public ResponseEntity<CustomApiResponse<?>> createMember(CreateMemberDto.Req dto) {
+
+        // 한 번 더 검증
+        checkEmailExists(dto.getEmail());
+        checkPhoneExists(dto.getPhone());
+        checkUserIdExists(dto.getUserId());
+
+        // 비밀번호 암호화
+        String encodedPw = passwordEncoder.encode(dto.getPassword());
+
+        // 멤버 생성
+        MemberEntity member = CreateMemberDto.Req.builder()
+                .email(dto.getEmail())
+                .phone(dto.getPhone())
+                .userId(dto.getUserId())
+                .password(encodedPw)
+                .build().toEntity();
+
+        // 저장
+        memberRepository.save(member);
+
+        // 응답
+        CustomApiResponse<Object> resultBody = CustomApiResponse.createSuccess(HttpStatus.CREATED.value(), null, "회원가입에 성공하였습니다.");
+        return ResponseEntity.status(HttpStatus.CREATED).body(resultBody);
+
     }
 }

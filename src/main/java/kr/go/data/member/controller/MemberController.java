@@ -1,7 +1,6 @@
 package kr.go.data.member.controller;
 
-import jakarta.validation.constraints.Pattern;
-import kr.go.data.member.dto.ExampleDto;
+import kr.go.data.member.dto.CreateMemberDto;
 import kr.go.data.member.service.MemberService;
 import kr.go.data.util.response.CustomApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +37,9 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("members")
-    public ResponseEntity<CustomApiResponse<?>> registerMember(@RequestBody ExampleDto dto) {
-        return null;
+    public ResponseEntity<CustomApiResponse<?>> createMember(@RequestBody CreateMemberDto.Req dto) {
+        ResponseEntity<CustomApiResponse<?>> result = memberService.createMember(dto);
+        return result;
     }
 
 }
