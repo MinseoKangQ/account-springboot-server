@@ -1,7 +1,7 @@
 package kr.go.data.member.service;
 
 import kr.go.data.member.dto.CreateMemberDto;
-import kr.go.data.member.entity.MemberEntity;
+import kr.go.data.domain.MemberEntity;
 import kr.go.data.member.repository.MemberRepository;
 import kr.go.data.util.exception.CustomValidationException;
 import kr.go.data.util.exception.EntityDuplicatedException;

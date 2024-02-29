@@ -1,7 +1,7 @@
 package kr.go.data.member.repository;
 
 import java.util.Optional;
-import kr.go.data.member.entity.MemberEntity;
+import kr.go.data.domain.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

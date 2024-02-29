@@ -3,7 +3,7 @@ package kr.go.data.member.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import kr.go.data.member.entity.MemberEntity;
+import kr.go.data.domain.MemberEntity;
 import lombok.*;
 
 public class CreateMemberDto {

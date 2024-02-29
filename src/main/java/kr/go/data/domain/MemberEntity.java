@@ -1,4 +1,4 @@
-package kr.go.data.member.entity;
+package kr.go.data.domain;
 
 import jakarta.persistence.*;
 import kr.go.data.member.dto.CreateMemberDto;
