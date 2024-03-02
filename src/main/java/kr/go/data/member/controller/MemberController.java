@@ -1,6 +1,8 @@
 package kr.go.data.member.controller;
 
 import kr.go.data.member.dto.CreateMemberDto;
+import kr.go.data.member.dto.LoginDto;
+import kr.go.data.member.dto.LoginDto.Req;
 import kr.go.data.member.service.MemberService;
 import kr.go.data.util.response.CustomApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,13 @@ public class MemberController {
     @PostMapping("members")
     public ResponseEntity<CustomApiResponse<?>> createMember(@RequestBody CreateMemberDto.Req dto) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.createMember(dto);
+        return result;
+    }
+
+    // 로그인
+    @PostMapping("login")
+    public ResponseEntity<CustomApiResponse<?>> login(@RequestBody LoginDto.Req dto) {
+        ResponseEntity<CustomApiResponse<?>> result = memberService.login(dto);
         return result;
     }
 

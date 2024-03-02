@@ -2,9 +2,12 @@ package kr.go.data.member.service;
 
 import kr.go.data.member.dto.CreateMemberDto;
 import kr.go.data.domain.MemberEntity;
+import kr.go.data.member.dto.LoginDto;
 import kr.go.data.member.repository.MemberRepository;
 import kr.go.data.util.exception.CustomValidationException;
 import kr.go.data.util.exception.EntityDuplicatedException;
+import kr.go.data.util.exception.EntityNotFoundException;
+import kr.go.data.util.exception.PasswordIncorrectException;
 import kr.go.data.util.response.CustomApiResponse;
 import kr.go.data.util.valid.CustomValid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Member;
 
 @Service
 @RequiredArgsConstructor
@@ -102,6 +107,24 @@ public class MemberServiceImpl implements MemberService {
         // 응답
         CustomApiResponse<Object> resultBody = CustomApiResponse.createSuccess(HttpStatus.CREATED.value(), null, "회원가입에 성공하였습니다.");
         return ResponseEntity.status(HttpStatus.CREATED).body(resultBody);
+
+    }
+
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> login(LoginDto.Req dto) {
+
+        // 아이디가 존재하는지 확인 -> 존재하지 않는다면 error
+        MemberEntity member = memberRepository.findByUserId(dto.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+
+        // 비밀번호가 일치하는지 확인 -> 일치하지 않는다면 error
+        if(!passwordEncoder.matches(dto.getPassword(), member.getPassword())) {
+            throw new PasswordIncorrectException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 응답
+        CustomApiResponse<Object> resultBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), null, "로그인에 성공하였습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(resultBody);
 
     }
 }
