@@ -10,35 +10,35 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/member")
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
 
     // 이메일 중복 확인
-    @GetMapping("members/exists/email")
+    @GetMapping("exists/email")
     public ResponseEntity<CustomApiResponse<?>> checkEmailExists(@RequestParam String email) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.checkEmailExists(email);
         return result;
     }
 
     // 전화번호 확인
-    @GetMapping("members/exists/phone")
+    @GetMapping("exists/phone")
     public ResponseEntity<CustomApiResponse<?>> checkPhoneExists(@RequestParam String phone) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.checkPhoneExists(phone);
         return result;
     }
 
     // 아이디 중복 확인
-    @GetMapping("members/exists/userId")
+    @GetMapping("exists/userId")
     public ResponseEntity<CustomApiResponse<?>> checkUserIdExists(@RequestParam String userId) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.checkUserIdExists(userId);
         return result;
     }
 
     // 회원가입
-    @PostMapping("members")
+    @PostMapping("sign-up")
     public ResponseEntity<CustomApiResponse<?>> createMember(@RequestBody CreateMemberDto.Req dto) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.createMember(dto);
         return result;

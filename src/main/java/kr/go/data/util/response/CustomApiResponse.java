@@ -14,7 +14,6 @@ public class CustomApiResponse<T>{
     private static final int BAD_REQUEST = 400;
     private static final int NOT_FOUND = 404;
     private static final int SERVER_ERROR = 500;
-
     private int status;
     private T data;
     private String message;
