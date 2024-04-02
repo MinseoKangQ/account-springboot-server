@@ -191,8 +191,8 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(memberEntity);
 
         // 응답
-        CustomApiResponse<?> resultBody = CustomApiResponse.createSuccess(HttpStatus.NO_CONTENT.value(), null, "비밀번호가 변경이 완료되었습니다.");
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultBody);
+        CustomApiResponse<?> resultBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), null, "비밀번호가 변경이 완료되었습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(resultBody);
 
     }
 
