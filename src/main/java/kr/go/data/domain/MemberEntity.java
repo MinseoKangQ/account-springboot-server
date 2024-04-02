@@ -1,6 +1,7 @@
 package kr.go.data.domain;
 
 import jakarta.persistence.*;
+import kr.go.data.member.dto.ChangePasswordDto;
 import kr.go.data.member.dto.CreateMemberDto;
 import lombok.*;
 
@@ -33,6 +34,10 @@ public class MemberEntity {
         this.password = password;
         this.email = email;
         this.phone = phone;
+    }
+
+    public void changePassword(String pw) {
+        this.password = pw;
     }
 
 }

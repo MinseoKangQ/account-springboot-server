@@ -1,5 +1,8 @@
 package kr.go.data.member.service;
 
+import kr.go.data.member.dto.ChangePasswordDto;
+import kr.go.data.member.dto.ChangePasswordDto.Req;
+import kr.go.data.member.dto.CheckPasswordDto;
 import kr.go.data.member.dto.CreateMemberDto;
 import kr.go.data.domain.MemberEntity;
 import kr.go.data.member.dto.DefaultInformationDto;
@@ -9,6 +12,7 @@ import kr.go.data.util.exception.CustomValidationException;
 import kr.go.data.util.exception.EntityDuplicatedException;
 import kr.go.data.util.exception.EntityNotFoundException;
 import kr.go.data.util.exception.PasswordIncorrectException;
+import kr.go.data.util.exception.PasswordNotChangedException;
 import kr.go.data.util.response.CustomApiResponse;
 import kr.go.data.util.valid.CustomValid;
 import lombok.RequiredArgsConstructor;
@@ -132,6 +136,8 @@ public class MemberServiceImpl implements MemberService {
     // 비밀번호 변경 페이지 접속 시 나오는 사용자 기본 정보
     @Override
     public ResponseEntity<CustomApiResponse<?>> defaultInformation(String userId) {
+
+        // 회원 찾기
         MemberEntity memberEntity = memberRepository.findByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException("id가 " + userId + "인 회원은 존재하지 않습니다."));
 
@@ -141,5 +147,52 @@ public class MemberServiceImpl implements MemberService {
 
         CustomApiResponse<?> resultBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), data, "회원 정보가 정상적으로 조회되었습니다.");
         return ResponseEntity.status(HttpStatus.OK).body(resultBody);
+    }
+
+    // 입력한 비밀번호가 현재 비밀번호와 같은지 확인
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> checkPassword(CheckPasswordDto.Req dto) {
+
+        // 회원 찾기
+        MemberEntity memberEntity = memberRepository.findByUserId(dto.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("id가 " + dto.getUserId() + "인 회원은 존재하지 않습니다."));
+
+        // 비밀번호가 같으면
+        if (passwordEncoder.matches(dto.getPw(), memberEntity.getPassword())) {
+            throw new PasswordNotChangedException("이전 비밀번호와 동일합니다.");
+        }
+
+        // 비밀번호가 같지 않다면
+        CustomApiResponse<?> resultBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), null, "사용 가능한 비밀번호입니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(resultBody);
+
+    }
+
+    // 비밀번호 변경
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> changePassword(ChangePasswordDto.Req dto) {
+
+        // 회원 찾기
+        MemberEntity memberEntity = memberRepository.findByUserId(dto.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("id가 " + dto.getUserId() + "인 회원은 존재하지 않습니다."));
+
+        // 이전 비밀번호와 같으면
+        if (passwordEncoder.matches(dto.getPw1(), memberEntity.getPassword())) {
+            throw new PasswordNotChangedException("이전 비밀번호와 동일합니다.");
+        }
+
+        // pw1과 pw2가 같은지 확인
+        if (!dto.getPw1().equals(dto.getPw2())) {
+            throw new PasswordIncorrectException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 비밀번호 변경
+        memberEntity.changePassword(passwordEncoder.encode(dto.getPw1()));
+        memberRepository.save(memberEntity);
+
+        // 응답
+        CustomApiResponse<?> resultBody = CustomApiResponse.createSuccess(HttpStatus.NO_CONTENT.value(), null, "비밀번호가 변경이 완료되었습니다.");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultBody);
+
     }
 }

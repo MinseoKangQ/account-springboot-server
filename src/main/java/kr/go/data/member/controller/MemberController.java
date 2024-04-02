@@ -1,5 +1,7 @@
 package kr.go.data.member.controller;
 
+import kr.go.data.member.dto.ChangePasswordDto;
+import kr.go.data.member.dto.CheckPasswordDto;
 import kr.go.data.member.dto.CreateMemberDto;
 import kr.go.data.member.dto.LoginDto;
 import kr.go.data.member.service.MemberService;
@@ -54,6 +56,20 @@ public class MemberController {
     @GetMapping("default-information")
     public ResponseEntity<CustomApiResponse<?>> defaultInformation(@RequestParam("userId") String userId){
         ResponseEntity<CustomApiResponse<?>> result = memberService.defaultInformation(userId);
+        return result;
+    }
+
+    // 기존 비밀번호와 같은지 확인
+    @GetMapping("check-password")
+    public ResponseEntity<CustomApiResponse<?>> checkPassword(@RequestBody CheckPasswordDto.Req dto) {
+        ResponseEntity<CustomApiResponse<?>> result = memberService.checkPassword(dto);
+        return result;
+    }
+
+    // 비밀번호 변경
+    @PutMapping("change-password")
+    public ResponseEntity<CustomApiResponse<?>> changePassword(@RequestBody ChangePasswordDto.Req dto) {
+        ResponseEntity<CustomApiResponse<?>> result = memberService.changePassword(dto);
         return result;
     }
 
