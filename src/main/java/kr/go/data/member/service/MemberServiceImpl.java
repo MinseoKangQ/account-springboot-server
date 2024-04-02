@@ -173,14 +173,14 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity memberEntity = memberRepository.findByUserId(dto.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("id가 " + dto.getUserId() + "인 회원은 존재하지 않습니다."));
 
-        // 이전 비밀번호와 같으면
-        if (passwordEncoder.matches(dto.getPw1(), memberEntity.getPassword())) {
-            throw new PasswordNotChangedException("이전 비밀번호와 동일합니다.");
-        }
-
         // pw1과 pw2가 같은지 확인
         if (!dto.getPw1().equals(dto.getPw2())) {
             throw new PasswordIncorrectException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 이전 비밀번호와 같으면
+        if (passwordEncoder.matches(dto.getPw1(), memberEntity.getPassword())) {
+            throw new PasswordNotChangedException("이전 비밀번호와 동일합니다.");
         }
 
         // 비밀번호 변경
