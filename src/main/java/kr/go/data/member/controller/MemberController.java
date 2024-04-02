@@ -73,4 +73,11 @@ public class MemberController {
         return result;
     }
 
+    // 회원 탈퇴
+    @DeleteMapping("{userId}")
+    public ResponseEntity<CustomApiResponse<?>> withdraw(@PathVariable("userId") String userId) {
+        ResponseEntity<CustomApiResponse<?>> result = memberService.withdraw(userId);
+        return result;
+    }
+
 }

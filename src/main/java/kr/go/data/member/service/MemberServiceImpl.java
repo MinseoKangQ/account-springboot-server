@@ -195,4 +195,18 @@ public class MemberServiceImpl implements MemberService {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultBody);
 
     }
+
+    // 회원 탈퇴
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> withdraw(String userId) {
+
+        // 별 다른 검증 없이 유저가 존재하기만 한다면 회원탈퇴
+        MemberEntity memberEntity = memberRepository.findByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException("id가 " + userId + "인 회원은 존재하지 않습니다."));
+
+        memberRepository.delete(memberEntity);
+
+        CustomApiResponse<?> resultBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), null, "회원이 정상적으로 탈퇴되었습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(resultBody);
+    }
 }

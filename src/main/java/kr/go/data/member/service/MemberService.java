@@ -16,5 +16,6 @@ public interface MemberService {
     ResponseEntity<CustomApiResponse<?>> defaultInformation(String userId);
     ResponseEntity<CustomApiResponse<?>> checkPassword(CheckPasswordDto.Req dto);
     ResponseEntity<CustomApiResponse<?>> changePassword(ChangePasswordDto.Req dto);
+    ResponseEntity<CustomApiResponse<?>> withdraw(String userId);
 
 }
