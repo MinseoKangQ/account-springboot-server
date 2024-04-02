@@ -2,6 +2,7 @@ package kr.go.data.member.service;
 
 import kr.go.data.member.dto.CreateMemberDto;
 import kr.go.data.domain.MemberEntity;
+import kr.go.data.member.dto.DefaultInformationDto;
 import kr.go.data.member.dto.LoginDto;
 import kr.go.data.member.repository.MemberRepository;
 import kr.go.data.util.exception.CustomValidationException;
@@ -126,5 +127,19 @@ public class MemberServiceImpl implements MemberService {
         CustomApiResponse<Object> resultBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), null, "로그인에 성공하였습니다.");
         return ResponseEntity.status(HttpStatus.OK).body(resultBody);
 
+    }
+
+    // 비밀번호 변경 페이지 접속 시 나오는 사용자 기본 정보
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> defaultInformation(String userId) {
+        MemberEntity memberEntity = memberRepository.findByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException("id가 " + userId + "인 회원은 존재하지 않습니다."));
+
+        DefaultInformationDto.Res data = DefaultInformationDto.Res.builder()
+                .member(memberEntity)
+                .build();
+
+        CustomApiResponse<?> resultBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), data, "회원 정보가 정상적으로 조회되었습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(resultBody);
     }
 }

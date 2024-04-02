@@ -2,7 +2,6 @@ package kr.go.data.member.controller;
 
 import kr.go.data.member.dto.CreateMemberDto;
 import kr.go.data.member.dto.LoginDto;
-import kr.go.data.member.dto.LoginDto.Req;
 import kr.go.data.member.service.MemberService;
 import kr.go.data.util.response.CustomApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +38,7 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("sign-up")
-    public ResponseEntity<CustomApiResponse<?>> createMember(@RequestBody CreateMemberDto.Req dto) {
+    public ResponseEntity<CustomApiResponse<?>> signUp(@RequestBody CreateMemberDto.Req dto) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.createMember(dto);
         return result;
     }
@@ -48,6 +47,13 @@ public class MemberController {
     @PostMapping("login")
     public ResponseEntity<CustomApiResponse<?>> login(@RequestBody LoginDto.Req dto) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.login(dto);
+        return result;
+    }
+
+    // 비밀번호 변경 페이지 접속
+    @GetMapping("default-information")
+    public ResponseEntity<CustomApiResponse<?>> defaultInformation(@RequestParam("userId") String userId){
+        ResponseEntity<CustomApiResponse<?>> result = memberService.defaultInformation(userId);
         return result;
     }
 
