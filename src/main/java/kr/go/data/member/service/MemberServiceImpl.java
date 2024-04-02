@@ -117,7 +117,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 아이디가 존재하는지 확인 -> 존재하지 않는다면 error
         MemberEntity member = memberRepository.findByUserId(dto.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new EntityNotFoundException("id가 " + dto.getUserId() + "인 회원은 존재하지 않습니다."));
 
         // 비밀번호가 일치하는지 확인 -> 일치하지 않는다면 error
         if(!passwordEncoder.matches(dto.getPassword(), member.getPassword())) {
@@ -188,7 +188,7 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(memberEntity);
 
         // 응답
-        CustomApiResponse<?> resultBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), null, "비밀번호가 변경이 완료되었습니다.");
+        CustomApiResponse<?> resultBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), null, "비밀번호 변경이 완료되었습니다.");
         return ResponseEntity.status(HttpStatus.OK).body(resultBody);
 
     }
