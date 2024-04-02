@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import kr.go.data.domain.MemberEntity;
 import lombok.*;
 
-public class CreateMemberDto {
+public class SignUpDto {
 
     @Getter
     @Builder

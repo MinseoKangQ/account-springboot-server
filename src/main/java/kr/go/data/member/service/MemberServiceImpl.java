@@ -1,9 +1,8 @@
 package kr.go.data.member.service;
 
 import kr.go.data.member.dto.ChangePasswordDto;
-import kr.go.data.member.dto.ChangePasswordDto.Req;
 import kr.go.data.member.dto.CheckPasswordDto;
-import kr.go.data.member.dto.CreateMemberDto;
+import kr.go.data.member.dto.SignUpDto;
 import kr.go.data.domain.MemberEntity;
 import kr.go.data.member.dto.DefaultInformationDto;
 import kr.go.data.member.dto.LoginDto;
@@ -20,8 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.lang.reflect.Member;
 
 @Service
 @RequiredArgsConstructor
@@ -88,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ResponseEntity<CustomApiResponse<?>> createMember(CreateMemberDto.Req dto) {
+    public ResponseEntity<CustomApiResponse<?>> createMember(SignUpDto.Req dto) {
 
         // 한 번 더 검증
         checkEmailExists(dto.getEmail());
@@ -99,7 +96,7 @@ public class MemberServiceImpl implements MemberService {
         String encodedPw = passwordEncoder.encode(dto.getPassword());
 
         // 멤버 생성
-        MemberEntity member = CreateMemberDto.Req.builder()
+        MemberEntity member = SignUpDto.Req.builder()
                 .email(dto.getEmail())
                 .phone(dto.getPhone())
                 .userId(dto.getUserId())

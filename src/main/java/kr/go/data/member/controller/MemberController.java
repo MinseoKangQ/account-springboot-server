@@ -2,7 +2,7 @@ package kr.go.data.member.controller;
 
 import kr.go.data.member.dto.ChangePasswordDto;
 import kr.go.data.member.dto.CheckPasswordDto;
-import kr.go.data.member.dto.CreateMemberDto;
+import kr.go.data.member.dto.SignUpDto;
 import kr.go.data.member.dto.LoginDto;
 import kr.go.data.member.service.MemberService;
 import kr.go.data.util.response.CustomApiResponse;
@@ -40,7 +40,7 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("sign-up")
-    public ResponseEntity<CustomApiResponse<?>> signUp(@RequestBody CreateMemberDto.Req dto) {
+    public ResponseEntity<CustomApiResponse<?>> signUp(@RequestBody SignUpDto.Req dto) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.createMember(dto);
         return result;
     }
@@ -60,14 +60,14 @@ public class MemberController {
     }
 
     // 기존 비밀번호와 같은지 확인
-    @GetMapping("check-password")
+    @PostMapping("check-password")
     public ResponseEntity<CustomApiResponse<?>> checkPassword(@RequestBody CheckPasswordDto.Req dto) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.checkPassword(dto);
         return result;
     }
 
     // 비밀번호 변경
-    @PutMapping("change-password")
+    @PutMapping("password")
     public ResponseEntity<CustomApiResponse<?>> changePassword(@RequestBody ChangePasswordDto.Req dto) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.changePassword(dto);
         return result;

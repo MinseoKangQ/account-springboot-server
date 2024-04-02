@@ -1,8 +1,6 @@
 package kr.go.data.domain;
 
 import jakarta.persistence.*;
-import kr.go.data.member.dto.ChangePasswordDto;
-import kr.go.data.member.dto.CreateMemberDto;
 import lombok.*;
 
 @Entity
