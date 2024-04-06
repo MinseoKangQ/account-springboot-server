@@ -9,11 +9,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
+import kr.go.data.util.response.CustomApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RequiredArgsConstructor
 public class JwtTokenFilter extends GenericFilterBean {
@@ -52,8 +54,21 @@ public class JwtTokenFilter extends GenericFilterBean {
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
+
     private void unauthorizedResponse(ServletResponse servletResponse) throws IOException {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+
+        // CustomApiResponse 객체 생성
+        CustomApiResponse<?> apiResponse = CustomApiResponse.createFailWithoutData(HttpServletResponse.SC_UNAUTHORIZED, "토큰값을 확인해주세요");
+
+        // 응답 본문에 쓸 JSON 문자열 생성
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = objectMapper.writeValueAsString(apiResponse);
+
+        // HttpServletResponse 설정
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(jsonResponse);
     }
 }
