@@ -1,6 +1,7 @@
 package kr.go.data.auth;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
@@ -33,8 +34,13 @@ public class JwtTokenProvider {
 
     // 토큰 검증
     public boolean validateToken(String token) {
-        Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-        return true;
+        try {
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+            return true;
+        } catch (JwtException e) {
+            System.out.println("Jwt Exception: " + e.getLocalizedMessage());
+            return false;
+        }
     }
 
     // 토큰에서 Claims 객체 추출

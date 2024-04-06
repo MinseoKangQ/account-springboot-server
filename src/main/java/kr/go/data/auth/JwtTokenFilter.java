@@ -28,12 +28,16 @@ public class JwtTokenFilter extends GenericFilterBean {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String token = extractToken(request);
 
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            setSecurityContext(token);
-            filterChain.doFilter(servletRequest, servletResponse);
-        } else {
-            unauthorizedResponse(servletResponse);
+        if (token != null && !jwtTokenProvider.validateToken(token)) {
+            unauthorizedResponse(servletResponse, "존재하지 않는 토큰입니다.");
+            return;
         }
+
+        if (token != null) {
+            setSecurityContext(token);
+        }
+
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     private String extractToken(HttpServletRequest request) {
@@ -55,17 +59,14 @@ public class JwtTokenFilter extends GenericFilterBean {
     }
 
 
-    private void unauthorizedResponse(ServletResponse servletResponse) throws IOException {
+    private void unauthorizedResponse(ServletResponse servletResponse, String message) throws IOException {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        // CustomApiResponse 객체 생성
-        CustomApiResponse<?> apiResponse = CustomApiResponse.createFailWithoutData(HttpServletResponse.SC_UNAUTHORIZED, "토큰값을 확인해주세요");
+        CustomApiResponse<?> apiResponse = CustomApiResponse.createFailWithoutData(HttpServletResponse.SC_UNAUTHORIZED, message);
 
-        // 응답 본문에 쓸 JSON 문자열 생성
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonResponse = objectMapper.writeValueAsString(apiResponse);
 
-        // HttpServletResponse 설정
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
