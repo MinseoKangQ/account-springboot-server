@@ -1,5 +1,6 @@
 package kr.go.data.util.config;
 
+import kr.go.data.auth.JwtTokenFilter;
 import kr.go.data.auth.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
