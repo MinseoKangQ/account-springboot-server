@@ -1,5 +1,6 @@
 package kr.go.data.member.service;
 
+import kr.go.data.auth.JwtTokenProvider;
 import kr.go.data.member.dto.ChangePasswordDto;
 import kr.go.data.member.dto.CheckPasswordDto;
 import kr.go.data.member.dto.SignUpDto;
@@ -15,6 +16,7 @@ import kr.go.data.util.exception.PasswordNotChangedException;
 import kr.go.data.util.response.CustomApiResponse;
 import kr.go.data.util.valid.CustomValid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
+    private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -124,9 +127,14 @@ public class MemberServiceImpl implements MemberService {
             throw new PasswordIncorrectException("비밀번호가 일치하지 않습니다.");
         }
 
-        // 응답
+        // 로그인에 성공했으므로, 토큰 생성
+        String token = jwtTokenProvider.createToken(dto.getUserId());
+
+        // 응답에 토큰을 포함하여 반환
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token); // 토큰을 "Authorization" 헤더에 포함
         CustomApiResponse<Object> resultBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), null, "로그인에 성공하였습니다.");
-        return ResponseEntity.status(HttpStatus.OK).body(resultBody);
+        return new ResponseEntity<>(resultBody, headers, HttpStatus.OK);
 
     }
 
