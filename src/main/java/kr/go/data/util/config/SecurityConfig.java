@@ -27,7 +27,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("api/member/login", "api/member/sign-up");
+        return (web) -> web.ignoring().requestMatchers("api/member/login", "api/member/sign-up", "api/member/exists/**");
     }
 
     @Bean
@@ -38,8 +38,8 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement((session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)))
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("api/member/login", "api/member/sign-up").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("api/member/login", "api/member/sign-up", "api/member/exists/**").permitAll()
+                        .anyRequest().hasRole("USER"))
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

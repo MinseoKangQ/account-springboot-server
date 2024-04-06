@@ -19,6 +19,7 @@ public class JwtTokenProvider {
     // 토큰 생성
     public String createToken(String username) {
         Claims claims = Jwts.claims().setSubject(username);
+        claims.put("roles", "USER");
         Date now = new Date();
         Date validity = new Date(now.getTime() + 36000000); // 1시간 유효
 
@@ -34,6 +35,11 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
         return true;
+    }
+
+    // 토큰에서 Claims 객체 추출
+    public Claims getClaimsFromToken(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 
 }
