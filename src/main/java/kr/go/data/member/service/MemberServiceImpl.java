@@ -1,6 +1,6 @@
 package kr.go.data.member.service;
 
-import kr.go.data.auth.JwtTokenProvider;
+import kr.go.data.util.jwt.JwtTokenProvider;
 import kr.go.data.member.dto.ChangePasswordDto;
 import kr.go.data.member.dto.CheckPasswordDto;
 import kr.go.data.member.dto.SignUpDto;

@@ -1,4 +1,4 @@
-package kr.go.data.auth;
+package kr.go.data.util.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
