@@ -7,6 +7,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import java.util.ArrayList;
 import kr.go.data.util.annotation.NoAuth;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import io.swagger.v3.oas.models.Operation;
@@ -54,6 +55,13 @@ public class SwaggerConfig {
                 operation.setSecurity(new ArrayList<>()); // 보안 요구 사항을 비워 인증 없이 접근 가능하도록 설정
             }
             return operation;
+        };
+    }
+
+    @Bean // custom-error-controller 제거
+    public OpenApiCustomizer removeCustomErrorController() {
+        return openApi -> {
+            openApi.getPaths().remove("/error");
         };
     }
 
