@@ -23,12 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/member")
 @RequiredArgsConstructor
-public class PreLoginController {
+public class PreLoginController implements PreLoginApi {
 
     private final MemberService memberService;
 
     // 이메일 중복 확인
-    @NoAuth
     @GetMapping("exists/email")
     public ResponseEntity<CustomApiResponse<?>> checkEmailExists(@RequestParam String email) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.checkEmailExists(email);
@@ -36,7 +35,6 @@ public class PreLoginController {
     }
 
     // 전화번호 확인
-    @NoAuth
     @GetMapping("exists/phone")
     public ResponseEntity<CustomApiResponse<?>> checkPhoneExists(@RequestParam String phone) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.checkPhoneExists(phone);
@@ -44,7 +42,6 @@ public class PreLoginController {
     }
 
     // 아이디 중복 확인
-    @NoAuth
     @GetMapping("exists/userId")
     public ResponseEntity<CustomApiResponse<?>> checkUserIdExists(@RequestParam String userId) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.checkUserIdExists(userId);
@@ -52,7 +49,6 @@ public class PreLoginController {
     }
 
     // 회원가입
-    @NoAuth
     @PostMapping("sign-up")
     public ResponseEntity<CustomApiResponse<?>> signUp(@RequestBody SignUpDto.Req dto) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.createMember(dto);
@@ -60,7 +56,6 @@ public class PreLoginController {
     }
 
     // 로그인
-    @NoAuth
     @PostMapping("login")
     public ResponseEntity<CustomApiResponse<?>> login(@RequestBody LoginDto.Req dto) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.login(dto);
