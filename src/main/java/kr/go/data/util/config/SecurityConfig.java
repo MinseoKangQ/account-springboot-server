@@ -26,7 +26,8 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("api/member/login", "api/member/sign-up", "api/member/exists/**");
+        return (web) -> web.ignoring().requestMatchers("api/member/login", "api/member/sign-up", "api/member/exists/**",
+                "swagger-ui.html/**", "swagger-ui/**", "api-docs", "api-docs/**", "v3/api-docs/**", "v3/api-docs/swagger-config");
     }
 
     @Bean
@@ -37,7 +38,9 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement((session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)))
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("api/member/login", "api/member/sign-up", "api/member/exists/**").permitAll()
+                        .requestMatchers("api/member/login", "api/member/sign-up", "api/member/exists/**",
+                                "swagger-ui.html/**", "swagger-ui/**", "api-docs", "api-docs/**", "v3/api-docs/**", "v3/api-docs/swagger-config")
+                        .permitAll()
                         .anyRequest().hasRole("USER"))
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
