@@ -146,7 +146,33 @@ public interface PreLoginApi {
     ResponseEntity<CustomApiResponse<?>> signUp(@RequestBody SignUpDto.Req dto);
 
     @NoAuth
-    @Operation(summary = "[로그인] 로그인", description = "response header에 token 값 존재")
+    @Operation(summary = "[로그인] 로그인", description = "사용자가 로그인할 때 ID와 비밀번호를 확인하고, 성공적인 로그인 시 토큰을 response header에 반환합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "로그인에 성공하였습니다.",
+                    content = @Content(mediaType = "application/json",
+                            examples = @ExampleObject(value = "{\n" +
+                                                              "    \"status\": 200,\n" +
+                                                              "    \"data\": null,\n" +
+                                                              "    \"message\": \"로그인에 성공하였습니다.\"\n" +
+                                                              "}"),
+                            schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "401", description = "비밀번호가 일치하지 않습니다.",
+                    content = @Content(mediaType = "application/json",
+                            examples = @ExampleObject(value = "{\n" +
+                                                              "    \"status\": 401,\n" +
+                                                              "    \"data\": null,\n" +
+                                                              "    \"message\": \"비밀번호가 일치하지 않습니다.\"\n" +
+                                                              "}"),
+                            schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "404", description = "해당 사용자를 찾을 수 없습니다.",
+                    content = @Content(mediaType = "application/json",
+                            examples = @ExampleObject(value = "{\n" +
+                                                              "    \"status\": 404,\n" +
+                                                              "    \"data\": null,\n" +
+                                                              "    \"message\": \"id가 hih인 회원은 존재하지 않습니다.\"\n" +
+                                                              "}"),
+                            schema = @Schema(implementation = CustomApiResponse.class)))
+    })
     @PostMapping("login")
     ResponseEntity<CustomApiResponse<?>> login(@RequestBody LoginDto.Req dto);
 }
