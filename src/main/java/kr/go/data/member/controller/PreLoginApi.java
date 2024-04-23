@@ -1,6 +1,8 @@
 package kr.go.data.member.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -50,7 +52,9 @@ public interface PreLoginApi {
                                                               "}")))
     })
     @GetMapping("exists/email")
-    ResponseEntity<CustomApiResponse<?>> checkEmailExists(@RequestParam String email);
+    ResponseEntity<CustomApiResponse<?>> checkEmailExists(
+            @Parameter(name = "email", description = "사용자가 입력한 이메일", in = ParameterIn.QUERY, required = true, example = "hello@example.com")
+            @RequestParam String email);
 
     @NoAuth
     @Operation(summary = "[회원가입] 전화번호 중복 확인")
@@ -81,7 +85,9 @@ public interface PreLoginApi {
                                                               "}")))
     })
     @GetMapping("exists/phone")
-    ResponseEntity<CustomApiResponse<?>> checkPhoneExists(@RequestParam String phone);
+    ResponseEntity<CustomApiResponse<?>> checkPhoneExists(
+            @Parameter(name = "phone", description = "사용자가 입력한 전화번호", in = ParameterIn.QUERY, required = true, example = "01000000000")
+            @RequestParam String phone);
 
     @NoAuth
     @Operation(summary = "[회원가입] 아이디 중복 확인")
@@ -112,7 +118,9 @@ public interface PreLoginApi {
                                                               "}")))
     })
     @GetMapping("exists/userId")
-    ResponseEntity<CustomApiResponse<?>> checkUserIdExists(@RequestParam String userId);
+    ResponseEntity<CustomApiResponse<?>> checkUserIdExists(
+            @Parameter(name = "userId", description = "사용자가 입력한 아이디", in = ParameterIn.QUERY, required = true, example = "hello")
+            @RequestParam String userId);
 
     @NoAuth
     @Operation(summary = "[회원가입] 회원가입")
@@ -143,7 +151,17 @@ public interface PreLoginApi {
                             schema = @Schema(implementation = CustomApiResponse.class)))
     })
     @PostMapping("sign-up")
-    ResponseEntity<CustomApiResponse<?>> signUp(@RequestBody SignUpDto.Req dto);
+    ResponseEntity<CustomApiResponse<?>> signUp(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "회원가입 요청 데이터", required = true,
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = SignUpDto.Req.class),
+                            examples = @ExampleObject(value = "{\n" +
+                                                              "    \"userId\": \"hello\",\n" +
+                                                              "    \"password\": \"1234\",\n" +
+                                                              "    \"email\": \"hello@example.com\",\n" +
+                                                              "    \"phone\": \"01000000000\"\n" +
+                                                              "}")))
+            @RequestBody SignUpDto.Req dto);
 
     @NoAuth
     @Operation(summary = "[로그인] 로그인", description = "사용자가 로그인할 때 ID와 비밀번호를 확인하고, 성공적인 로그인 시 토큰을 response header에 반환합니다.")
@@ -174,5 +192,13 @@ public interface PreLoginApi {
                             schema = @Schema(implementation = CustomApiResponse.class)))
     })
     @PostMapping("login")
-    ResponseEntity<CustomApiResponse<?>> login(@RequestBody LoginDto.Req dto);
+    ResponseEntity<CustomApiResponse<?>> login(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "로그인 요청 데이터", required = true,
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = LoginDto.Req.class),
+                            examples = @ExampleObject(value = "{\n" +
+                                                              "    \"userId\": \"hello\",\n" +
+                                                              "    \"password\": \"1234\"\n" +
+                                                              "}")))
+            @RequestBody LoginDto.Req dto);
 }

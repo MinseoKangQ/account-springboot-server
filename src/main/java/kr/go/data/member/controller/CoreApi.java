@@ -1,6 +1,8 @@
 package kr.go.data.member.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -46,7 +48,9 @@ public interface CoreApi {
                             schema = @Schema(implementation = CustomApiResponse.class)))
     })
     @GetMapping("default-information")
-    ResponseEntity<CustomApiResponse<?>> defaultInformation(@RequestParam("userId") String userId);
+    ResponseEntity<CustomApiResponse<?>> defaultInformation(
+            @Parameter(name = "userId", description = "사용자의 아이디", in = ParameterIn.QUERY, required = true, example = "hello")
+            @RequestParam("userId") String userId);
 
     @Operation(summary = "[회원정보 변경 페이지] 이전 비밀번호와 동일한지 확인")
     @ApiResponses(value = {
@@ -68,7 +72,15 @@ public interface CoreApi {
                             schema = @Schema(implementation = CustomApiResponse.class)))
     })
     @PostMapping("check-password")
-    ResponseEntity<CustomApiResponse<?>> checkPassword(@RequestBody CheckPasswordDto.Req dto);
+    ResponseEntity<CustomApiResponse<?>> checkPassword(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "비밀번호 변경 요청 데이터", required = true,
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CheckPasswordDto.Req.class),
+                            examples = @ExampleObject(value = "{\n" +
+                                                              "    \"userId\": \"hello\",\n" +
+                                                              "    \"pw\": \"abcd1234@!\"\n" +
+                                                              "}")))
+            @RequestBody CheckPasswordDto.Req dto);
 
     @Operation(summary = "[회원정보 변경 페이지] 비밀번호 변경")
     @ApiResponses(value = {
@@ -98,7 +110,16 @@ public interface CoreApi {
                             schema = @Schema(implementation = CustomApiResponse.class)))
     })
     @PutMapping("password")
-    ResponseEntity<CustomApiResponse<?>> changePassword(@RequestBody ChangePasswordDto.Req dto);
+    ResponseEntity<CustomApiResponse<?>> changePassword(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "비밀번호 변경 요청 데이터", required = true,
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ChangePasswordDto.Req.class),
+                            examples = @ExampleObject(value = "{\n" +
+                                                              "    \"userId\": \"hello\",\n" +
+                                                              "    \"pw1\": \"1234\",\n" +
+                                                              "    \"pw2\": \"abcd1234@!\"\n" +
+                                                              "}")))
+            ChangePasswordDto.Req dto);
 
     @Operation(summary = "[회원탈퇴] 회원탈퇴")
     @ApiResponses(value = {
@@ -115,11 +136,13 @@ public interface CoreApi {
                             examples = @ExampleObject(value = "{\n" +
                                                               "    \"status\": 404,\n" +
                                                               "    \"data\": null,\n" +
-                                                              "    \"message\": \"id가 hihi2인 회원은 존재하지 않습니다.\"\n" +
+                                                              "    \"message\": \"id가 hello인 회원은 존재하지 않습니다.\"\n" +
                                                               "}"),
                             schema = @Schema(implementation = CustomApiResponse.class)))
     })
     @DeleteMapping("{userId}")
-    ResponseEntity<CustomApiResponse<?>> withdraw(@PathVariable("userId") String userId);
+    ResponseEntity<CustomApiResponse<?>> withdraw(
+            @Parameter(name = "userId", description = "사용자의 아이디", in = ParameterIn.QUERY, required = true, example = "hello")
+            @PathVariable("userId") String userId);
 
 }
