@@ -1,19 +1,29 @@
 package kr.go.data.member.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.go.data.member.dto.ChangePasswordDto;
 import kr.go.data.member.dto.CheckPasswordDto;
-import kr.go.data.member.dto.SignUpDto;
 import kr.go.data.member.dto.LoginDto;
+import kr.go.data.member.dto.SignUpDto;
 import kr.go.data.member.service.MemberService;
+import kr.go.data.util.annotation.NoAuth;
 import kr.go.data.util.response.CustomApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/member")
 @RequiredArgsConstructor
-public class MemberController {
+public class PreLoginController implements PreLoginApi {
 
     private final MemberService memberService;
 
@@ -49,34 +59,6 @@ public class MemberController {
     @PostMapping("login")
     public ResponseEntity<CustomApiResponse<?>> login(@RequestBody LoginDto.Req dto) {
         ResponseEntity<CustomApiResponse<?>> result = memberService.login(dto);
-        return result;
-    }
-
-    // 비밀번호 변경 페이지 접속
-    @GetMapping("default-information")
-    public ResponseEntity<CustomApiResponse<?>> defaultInformation(@RequestParam("userId") String userId){
-        ResponseEntity<CustomApiResponse<?>> result = memberService.defaultInformation(userId);
-        return result;
-    }
-
-    // 기존 비밀번호와 같은지 확인
-    @PostMapping("check-password")
-    public ResponseEntity<CustomApiResponse<?>> checkPassword(@RequestBody CheckPasswordDto.Req dto) {
-        ResponseEntity<CustomApiResponse<?>> result = memberService.checkPassword(dto);
-        return result;
-    }
-
-    // 비밀번호 변경
-    @PutMapping("password")
-    public ResponseEntity<CustomApiResponse<?>> changePassword(@RequestBody ChangePasswordDto.Req dto) {
-        ResponseEntity<CustomApiResponse<?>> result = memberService.changePassword(dto);
-        return result;
-    }
-
-    // 회원 탈퇴
-    @DeleteMapping("{userId}")
-    public ResponseEntity<CustomApiResponse<?>> withdraw(@PathVariable("userId") String userId) {
-        ResponseEntity<CustomApiResponse<?>> result = memberService.withdraw(userId);
         return result;
     }
 
