@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public ResponseEntity<CustomApiResponse<?>> checkEmailExists(String email) {
@@ -93,7 +92,7 @@ public class MemberServiceImpl implements MemberService {
         checkUserIdExists(dto.getUserId());
 
         // 비밀번호 암호화
-        String encodedPw = passwordEncoder.encode(dto.getPassword());
+        String encodedPw = dto.getPassword();
 
         // 멤버 생성
         MemberEntity member = SignUpDto.Req.builder()
@@ -119,8 +118,7 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity member = memberRepository.findByUserId(dto.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("id가 " + dto.getUserId() + "인 회원은 존재하지 않습니다."));
 
-        // 비밀번호가 일치하는지 확인 -> 일치하지 않는다면 error
-        if(!passwordEncoder.matches(dto.getPassword(), member.getPassword())) {
+        if(dto.getPassword().equals(member.getPassword())) {
             throw new PasswordIncorrectException("비밀번호가 일치하지 않습니다.");
         }
 
@@ -155,7 +153,7 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new EntityNotFoundException("id가 " + dto.getUserId() + "인 회원은 존재하지 않습니다."));
 
         // 비밀번호가 같으면
-        if (passwordEncoder.matches(dto.getPw(), memberEntity.getPassword())) {
+        if (dto.getPw().equals(memberEntity.getPassword())) {
             throw new PasswordNotChangedException("이전 비밀번호와 동일합니다.");
         }
 
@@ -178,13 +176,12 @@ public class MemberServiceImpl implements MemberService {
             throw new PasswordIncorrectException("비밀번호가 일치하지 않습니다.");
         }
 
-        // 이전 비밀번호와 같으면
-        if (passwordEncoder.matches(dto.getPw1(), memberEntity.getPassword())) {
+        if(dto.getPw1().equals(memberEntity.getPassword())) {
             throw new PasswordNotChangedException("이전 비밀번호와 동일합니다.");
         }
 
         // 비밀번호 변경
-        memberEntity.changePassword(passwordEncoder.encode(dto.getPw1()));
+        memberEntity.changePassword(dto.getPw1());
         memberRepository.save(memberEntity);
 
         // 응답
