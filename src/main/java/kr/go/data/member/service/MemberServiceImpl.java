@@ -118,7 +118,7 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity member = memberRepository.findByUserId(dto.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("id가 " + dto.getUserId() + "인 회원은 존재하지 않습니다."));
 
-        if(dto.getPassword().equals(member.getPassword())) {
+        if(!dto.getPassword().equals(member.getPassword())) {
             throw new PasswordIncorrectException("비밀번호가 일치하지 않습니다.");
         }
 
